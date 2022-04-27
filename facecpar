@@ -1,0 +1,75 @@
+@startuml 
+
+entity consumidor {
+    *id : int NOT NULL [PK]
+    --
+    *nome : varchar(50) NOT NULL
+    *endereco : varchar(200) NOT NULL
+    *tipo_residencia : varchar NOT NULL
+    *taxa : float NOT NULL
+    *medidores : int NOT NULL
+}
+
+entity medidor {
+     *id : int NOT NULL [PK]
+    --
+    *numero_medidor : int NOT NULL
+    *endereco : varchar(200) NOT NULL
+    *tamanho : int NOT NULL
+    *modelo : varchar NOT NULL
+    *
+}
+
+entity documentoLeituraMedidor {
+    *id : int NOT NULL [PK]
+    --
+    *medidor_fk : int NOT NULL [FK]
+    --
+    *numero_funcionario: int NOT NULL
+    *numero_medidor: int NOT NULL
+    *registro_tempo : int NOT NULL
+    *nivel_consumo : int NOT NULL
+
+}
+
+entity taxa  {
+    *id : int NOT NULL [PK]
+    --
+    *limite_consumo : int NOT NULL
+    *valor_variavel : int NOT NULL
+    *valor_fixo : int NOT NULL
+}
+
+entity contas_da_empresa {
+    *id : int NOT NULL [PK]
+    --
+   *leituras_recente : varchar NOT NULL
+   *taxa_aplicaveis : float NOT NULL 
+}
+
+entity cabecalho{
+    *id : int  NOT NULL [PK]
+    --
+    *numero_consumidor : int NOT NULL
+    *data_elaboracao : int NOT NULL
+    *prazo_pagamento : int NOT note left of objAlias
+        
+    end note
+}
+
+entity estoque {
+   *id : int NOT NULL [PK]
+   *quantidade: decimal(6,4) NOT NULL 
+}
+
+cliente::id --|{ endereco::cliente_fk
+cliente::id --|{ pedido_venda::cliente_fk
+
+cidade::id --|{ endereco::cidade_fk
+pedido_venda::id --|{ pedido_venda_item::pedido_venda_fk
+
+produto::id --|{ pedido_venda_item::produto_fk
+produto::id --|| estoque::id
+
+
+@enduml
