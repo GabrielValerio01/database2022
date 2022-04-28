@@ -1,0 +1,75 @@
+@startuml 
+
+entity Consumidor {
+    *id : int NOT NULL [PK]
+    --
+    *nome : varchar(50) NOT NULL
+    *endereco : varchar(200) NOT NULL
+    *tipo_residencia : varchar NOT NULL
+    *taxa : float NOT NULL
+    *medidores : int NOT NULL
+}
+
+entity Medidor {
+     *id : int NOT NULL [PK]
+    --
+    *endereco : varchar(200) NOT NULL
+    *tamanho : int NOT NULL
+    *modelo : varchar NOT NULL
+}
+
+entity Documento_Leitura_Medidor {
+    *id : int NOT NULL [PK]
+    --
+    *medidor_fk : int NOT NULL [FK]
+    --
+    *funcionario: varchar NOT NULL
+    *numero_funcionario: int NOT NULL
+    *numero_medidor: int NOT NULL
+    *registro_tempo : int NOT NULL
+    *nivel_consumo : int NOT NULL
+
+}
+
+entity Taxa  {
+    *id : int NOT NULL [PK]
+    --
+    *limite_consumo : int NOT NULL
+    *valor_variavel : int NOT NULL
+    *valor_fixo : int NOT NULL
+}
+
+entity Contas_Da_Empresa {
+    *id : int NOT NULL [PK]
+    --
+   *leituras_recente : int NOT NULL
+   *taxa_aplicaveis : float NOT NULL 
+}
+
+entity Cabecalho{
+    *id : int  NOT NULL [PK]
+    --
+    *numero_consumidor : int NOT NULL
+    *data_elaboracao : int NOT NULL
+    *prazo_pagamento : int NOT NULL
+    *intervalo_dias : int NOT NULL 
+
+}
+
+entity Linha_De_Detalhamento {
+   *id : int NOT NULL [PK]
+  --
+   *nivel_consumo : int NOT NULL
+   *valor : float NOT NULL 
+}
+
+Consumidor ||--|| Medidor
+Documento_Leitura_Medidor ||--|| Medidor
+Taxa ||--|{ Consumidor
+Contas_Da_Empresa ||--|| Consumidor
+Cabecalho ||--|| Documento_Leitura_Medidor
+Linha_De_Detalhamento ||--|| Taxa
+
+
+
+@enduml
